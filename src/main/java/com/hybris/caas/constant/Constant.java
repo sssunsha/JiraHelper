@@ -21,6 +21,9 @@ public class Constant {
         "configuration-service",
         "gbaas-service"};
 
+    public static final String SPRINT_REPORT_MARK = "----------------------------------------------------------------------------";
+    public static final String SPRINT_REPORT_TICKET_REGX = "CAAS-[0-9]+";
     public static final String REPOSITORY_LOCATION = "/Users/i340818/workspace/github";
-    public  static final String SPRINT_REPORT_SCRIPT_LOCATION = "/Users/i340818/workspace/personal/workspace/sprint-release-report/sprint-release-report.sh";
+    public static final String SPRINT_REPORT_SCRIPT_LOCATION = "/Users/i340818/workspace/personal/workspace/sprint-release-report/sprint-release-report.sh";
+    public static final String SPRINT_REPORT_FILE_LOCATION ="./release_notes.txt";
 }
