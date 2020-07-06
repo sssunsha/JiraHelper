@@ -5,7 +5,9 @@ import com.hybris.caas.model.GithubTicket;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,9 +17,17 @@ public class GithubHelper {
 
     private StringBuffer reportBuffer = new StringBuffer();
 
-    private Set<GithubTicket> BambooJiraTicketIDSet = new HashSet<>();
+    public Map<String, GithubTicket> getBambooJiraTicketIDMap() {
+        return BambooJiraTicketIDMap;
+    }
 
-    private Set<GithubTicket> MooncakeJiraTicketIDSet = new HashSet<>();
+    public Map<String, GithubTicket> getMooncakeJiraTicketIDMap() {
+        return MooncakeJiraTicketIDMap;
+    }
+
+    private Map<String, GithubTicket> BambooJiraTicketIDMap = new HashMap<>();
+
+    private Map<String, GithubTicket> MooncakeJiraTicketIDMap = new HashMap<>();
 
     // start to trigger and get the need to release pr list
     public void start() {
@@ -71,35 +81,35 @@ public class GithubHelper {
     public void parseSprintReport() {
         String report = this.reportBuffer.toString();
         System.out.println("Start to parse Bamboo services ...");
-        this.parseSprintReportHelp(report, Constant.BAMBOO_REPOSITORIES, this.BambooJiraTicketIDSet);
+        this.parseSprintReportHelp(report, Constant.BAMBOO_REPOSITORIES, this.BambooJiraTicketIDMap);
         System.out.println("Finish to parse Bamboo services ...");
 
         System.out.println("Start to parse Mooncake services ...");
-        this.parseSprintReportHelp(report, Constant.MOONCAKE_REPOSITORIES, this.MooncakeJiraTicketIDSet);
+        this.parseSprintReportHelp(report, Constant.MOONCAKE_REPOSITORIES, this.MooncakeJiraTicketIDMap);
         System.out.println("Finish to parse Mooncake services ...");
     }
 
-    private void parseSprintReportHelp(final String report,  final String[] repositories, Set<GithubTicket> set) {
-        set.clear();
+    private void parseSprintReportHelp(final String report,  final String[] repositories, Map<String, GithubTicket> map) {
+        map.clear();
         for (String repository : repositories) {
             int head = report.indexOf(repository);
             int end = report.indexOf(Constant.SPRINT_REPORT_MARK, head);
             String subStr = report.substring(head, end);
             // get all the jira tickets IDs
-            set.addAll(this.getAllJiraTicketIDs(repository, subStr));
+            map.putAll(this.getAllJiraTicketIDs(repository, subStr));
         }
     }
 
-    private Set<GithubTicket> getAllJiraTicketIDs(final String repository, final String str) {
+    private Map<String, GithubTicket> getAllJiraTicketIDs(final String repository, final String str) {
         Pattern p = Pattern.compile(Constant.SPRINT_REPORT_TICKET_REGX);
         Matcher m = p.matcher(str);
-        Set<GithubTicket> set = new HashSet<>();
+        Map<String, GithubTicket> map = new HashMap<>();
         while (m.find()) {
             GithubTicket gt = new GithubTicket();
             gt.setRepository(repository);
             gt.setTicketID(m.group());
-            set.add(gt);
+            map.put(m.group(), gt);
         }
-        return set;
+        return map;
     }
 }
