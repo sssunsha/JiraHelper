@@ -29,12 +29,12 @@ public class TicketHelper {
     private String team;
 
     public void start(Map<String, GithubTicket> ticketMap, final String team) {
-        System.out.println("Start to get jira tickets ...");
+        System.out.println("Start to get jira tickets for " + "team ...");
         this.team = team;
         // get the authorization data from local env
         String authorization = System.getenv(Constant.LOCAL_AUTHORIZATION_ENV);
-        headers.add("Accept", "application/json");
-        headers.add("Authorization", authorization);
+        headers.set("Accept", "application/json");
+        headers.set("Authorization", authorization);
 
         ticketMap.forEach((key, value) -> this.parseJiraTicket(fetchJiraTicketByID(key), value.getRepository()));
         System.out.println("Finish to generate release report for " +  team);
