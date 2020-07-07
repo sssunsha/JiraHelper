@@ -23,18 +23,18 @@ public class JiraHelperMangerService {
         if (teams == Constant.Teams.NONE) {
             return;
         }
-        // start to fetch and parse PR data from github
-        this.githubHelper.start();
-        this.githubHelper.readReleaseReportFile();
 
         switch (teams) {
             case MOONCAKE:
+                this.githubHelper.start(teams);
                 generateReleaseReportForMooncake();
                 break;
             case BAMBOO:
+                this.githubHelper.start(teams);
                 generateReleaseReportForBamboo();
                 break;
             case ALL:
+                this.githubHelper.start(teams);
                 generateReleaseReportForBamboo();
                 generateReleaseReportForMooncake();
                 break;

@@ -30,16 +30,27 @@ public class GithubHelper {
     private Map<String, GithubTicket> MooncakeJiraTicketIDMap = new HashMap<>();
 
     // start to trigger and get the need to release pr list
-    public void start() {
+    public void start(Constant.Teams team) {
 
         // trigger the sprint report script
         Process process = null;
         try {
-            process = Runtime.getRuntime().exec("/bin/sh " + Constant.SPRINT_REPORT_SCRIPT_LOCATION);
+            String subCommand = "";
+            switch (team) {
+                case BAMBOO:
+                    subCommand = "-b";
+                    break;
+                case MOONCAKE:
+                    subCommand = "-m";
+                    break;
+                case ALL:
+                    subCommand = "-a";
+            }
+            process = Runtime.getRuntime().exec("/bin/sh " + Constant.SPRINT_REPORT_SCRIPT_LOCATION + " " + subCommand);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("Start to generate sprint release report ...");
+        System.out.println("Start to generate sprint release report for " + team.name() + " ...");
         int status = 0;
         try {
             status = process.waitFor();
@@ -50,11 +61,11 @@ public class GithubHelper {
             System.err.println("Failed to trigger release report script ...");
         } else {
             System.out.println("Finish to generate release report ...");
-            this.readReleaseReportFile();
+            this.readReleaseReportFile(team);
         }
     }
 
-    public void readReleaseReportFile() {
+    public void readReleaseReportFile(Constant.Teams team) {
         try {
             System.out.println("Start to read sprint release report ...");
             InputStream f = new FileInputStream(Constant.SPRINT_REPORT_FILE_LOCATION);
@@ -69,7 +80,7 @@ public class GithubHelper {
                 reader.close();
                 f.close();
                 System.out.println("Finish to read sprint release report ...");
-                this.parseSprintReport();
+                this.parseSprintReport(team);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -78,15 +89,28 @@ public class GithubHelper {
         }
     }
 
-    public void parseSprintReport() {
+    public void parseSprintReport(Constant.Teams team) {
         String report = this.reportBuffer.toString();
-        System.out.println("Start to parse Bamboo services ...");
-        this.parseSprintReportHelp(report, Constant.BAMBOO_REPOSITORIES, this.BambooJiraTicketIDMap);
-        System.out.println("Finish to parse Bamboo services ...");
-
-        System.out.println("Start to parse Mooncake services ...");
-        this.parseSprintReportHelp(report, Constant.MOONCAKE_REPOSITORIES, this.MooncakeJiraTicketIDMap);
-        System.out.println("Finish to parse Mooncake services ...");
+        switch (team) {
+            case BAMBOO:
+                System.out.println("Start to parse Bamboo services ...");
+                this.parseSprintReportHelp(report, Constant.BAMBOO_REPOSITORIES, this.BambooJiraTicketIDMap);
+                System.out.println("Finish to parse Bamboo services ...");
+                return;
+            case MOONCAKE:
+                System.out.println("Start to parse Mooncake services ...");
+                this.parseSprintReportHelp(report, Constant.MOONCAKE_REPOSITORIES, this.MooncakeJiraTicketIDMap);
+                System.out.println("Finish to parse Mooncake services ...");
+                return;
+            case ALL:
+                System.out.println("Start to parse Bamboo services ...");
+                this.parseSprintReportHelp(report, Constant.BAMBOO_REPOSITORIES, this.BambooJiraTicketIDMap);
+                System.out.println("Finish to parse Bamboo services ...");
+                System.out.println("Start to parse Mooncake services ...");
+                this.parseSprintReportHelp(report, Constant.MOONCAKE_REPOSITORIES, this.MooncakeJiraTicketIDMap);
+                System.out.println("Finish to parse Mooncake services ...");
+                return;
+        }
     }
 
     private void parseSprintReportHelp(final String report,  final String[] repositories, Map<String, GithubTicket> map) {
