@@ -1,14 +1,13 @@
 package com.hybris.caas.component;
 
 import com.hybris.caas.constant.Constant;
+import com.hybris.caas.model.GithubService;
 import com.hybris.caas.model.GithubTicket;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,16 +17,22 @@ public class GithubHelper {
     private StringBuffer reportBuffer = new StringBuffer();
 
     public Map<String, GithubTicket> getBambooJiraTicketIDMap() {
-        return BambooJiraTicketIDMap;
+        return bambooJiraTicketIDMap;
     }
 
     public Map<String, GithubTicket> getMooncakeJiraTicketIDMap() {
-        return MooncakeJiraTicketIDMap;
+        return mooncakeJiraTicketIDMap;
     }
 
-    private Map<String, GithubTicket> BambooJiraTicketIDMap = new HashMap<>();
+    private Map<String, GithubTicket> bambooJiraTicketIDMap = new HashMap<>();
 
-    private Map<String, GithubTicket> MooncakeJiraTicketIDMap = new HashMap<>();
+    private Map<String, GithubTicket> mooncakeJiraTicketIDMap = new HashMap<>();
+
+    public Map<String, GithubService> getServiceMap() {
+        return serviceMap;
+    }
+
+    private Map<String, GithubService> serviceMap = new HashMap<>();
 
     // start to trigger and get the need to release pr list
     public void start(Constant.Teams team) {
@@ -51,6 +56,7 @@ public class GithubHelper {
             e.printStackTrace();
         }
         System.out.println("Start to generate sprint release report for " + team.name() + " ...");
+        this.serviceMap.clear();
         int status = 0;
         try {
             status = process.waitFor();
@@ -94,20 +100,20 @@ public class GithubHelper {
         switch (team) {
             case BAMBOO:
                 System.out.println("Start to parse Bamboo services ...");
-                this.parseSprintReportHelp(report, Constant.BAMBOO_REPOSITORIES, this.BambooJiraTicketIDMap);
+                this.parseSprintReportHelp(report, Constant.BAMBOO_REPOSITORIES, this.bambooJiraTicketIDMap);
                 System.out.println("Finish to parse Bamboo services ...");
                 return;
             case MOONCAKE:
                 System.out.println("Start to parse Mooncake services ...");
-                this.parseSprintReportHelp(report, Constant.MOONCAKE_REPOSITORIES, this.MooncakeJiraTicketIDMap);
+                this.parseSprintReportHelp(report, Constant.MOONCAKE_REPOSITORIES, this.mooncakeJiraTicketIDMap);
                 System.out.println("Finish to parse Mooncake services ...");
                 return;
             case ALL:
                 System.out.println("Start to parse Bamboo services ...");
-                this.parseSprintReportHelp(report, Constant.BAMBOO_REPOSITORIES, this.BambooJiraTicketIDMap);
+                this.parseSprintReportHelp(report, Constant.BAMBOO_REPOSITORIES, this.bambooJiraTicketIDMap);
                 System.out.println("Finish to parse Bamboo services ...");
                 System.out.println("Start to parse Mooncake services ...");
-                this.parseSprintReportHelp(report, Constant.MOONCAKE_REPOSITORIES, this.MooncakeJiraTicketIDMap);
+                this.parseSprintReportHelp(report, Constant.MOONCAKE_REPOSITORIES, this.mooncakeJiraTicketIDMap);
                 System.out.println("Finish to parse Mooncake services ...");
                 return;
         }
@@ -119,6 +125,14 @@ public class GithubHelper {
             int head = report.indexOf(repository);
             int end = report.indexOf(Constant.SPRINT_REPORT_MARK, head);
             String subStr = report.substring(head, end);
+            // get sha1 for the repository
+            int sha1Head = subStr.indexOf("[");
+            int sha1end = subStr.indexOf("]");
+            String sha1Str = subStr.substring(sha1Head + 1, sha1end);
+            GithubService githubService = new GithubService();
+            githubService.name = repository;
+            githubService.sha1 = sha1Str;
+            this.serviceMap.put(repository, githubService);
             // get all the jira tickets IDs
             map.putAll(this.getAllJiraTicketIDs(repository, subStr));
         }

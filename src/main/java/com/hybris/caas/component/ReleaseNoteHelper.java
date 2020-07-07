@@ -1,5 +1,6 @@
 package com.hybris.caas.component;
 
+import com.hybris.caas.model.GithubService;
 import com.hybris.caas.model.ReleaseNote;
 
 import java.io.*;
@@ -10,7 +11,7 @@ import java.util.Map;
 
 public class ReleaseNoteHelper {
 
-    public  void start(Map<String, ReleaseNote> map, String releaseReportFileLocation) {
+    public  void start(Map<String, ReleaseNote> map, Map<String, GithubService> serviceMap, String releaseReportFileLocation) {
 
         // generate the new release note map based on repository
         // here the map key is the repository
@@ -34,7 +35,7 @@ public class ReleaseNoteHelper {
             releaseMap.forEach((key, value) -> {
                 try {
                     Integer index = 1;
-                    writer.write("# "+key);
+                    writer.write("# "+key + " (" + serviceMap.get(key).sha1 + ")");
                     writer.newLine();
                     value.forEach(v -> {
                         try {

@@ -3,6 +3,15 @@
 ### introduction
 this tool is used to generate the release report for Bamboo and Mooncake
 
+### before using
+- should git clone all the Bamboo's and Mooncake's services in the same folder
+- should correct the `project_dir` of `sprint-release-report.sh` with above folder location
+
+such as:
+````
+    project_dir="/Users/i340818/workspace/github"
+````
+
 ### command help
 - --help, -h: print the command help information
 - --all, -a: generate both Bamboo's and Mooncake's services release report [default]

@@ -45,13 +45,13 @@ public class JiraHelperMangerService {
 
     private void generateReleaseReportForBamboo() {
         this.ticketHelper.start(this.githubHelper.getBambooJiraTicketIDMap(), "Bamboo");
-        this.releaseNoteHelper.start(this.ticketHelper.getReleaseNoteMap(),
+        this.releaseNoteHelper.start(this.ticketHelper.getReleaseNoteMap(), this.githubHelper.getServiceMap(),
                 Constant.BAMBOO_RELEASE_REPORT_FILE_LOCATION);
     }
 
     private void generateReleaseReportForMooncake() {
         this.ticketHelper.start(this.githubHelper.getMooncakeJiraTicketIDMap(), "Mooncake");
-        this.releaseNoteHelper.start(this.ticketHelper.getReleaseNoteMap(),
+        this.releaseNoteHelper.start(this.ticketHelper.getReleaseNoteMap(), this.githubHelper.getServiceMap(),
                 Constant.MOONCAKE_RELEASE_REPORT_FILE_LOCATION);
     }
 }
