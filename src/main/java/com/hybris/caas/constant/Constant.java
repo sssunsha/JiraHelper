@@ -2,6 +2,13 @@ package com.hybris.caas.constant;
 
 public class Constant {
 
+    public static enum Teams {
+        ALL,
+        BAMBOO,
+        MOONCAKE,
+        NONE
+    };
+
     public static final String[] BAMBOO_REPOSITORIES = {
         "caas2-uaa-configuration",
         "approuter",

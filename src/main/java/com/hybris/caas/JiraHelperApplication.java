@@ -18,8 +18,8 @@ import java.util.Arrays;
 public class JiraHelperApplication {
 
     public static void main(final String[] args) {
-//        ConfigurableApplicationContext ctx = SpringApplication.run(JiraHelperApplication.class, args);
+        System.out.println(args);
         System.out.println("Welcome to Jira helper ...........");
-        new JiraHelperMangerService().start();
+        new JiraHelperMangerService().start(args);
     }
 }

@@ -1,5 +1,6 @@
 package com.hybris.caas.service;
 
+import com.hybris.caas.component.CommandHelper;
 import com.hybris.caas.component.GithubHelper;
 import com.hybris.caas.component.ReleaseNoteHelper;
 import com.hybris.caas.component.TicketHelper;
@@ -12,27 +13,44 @@ import java.io.IOException;
 @Service
 public class JiraHelperMangerService {
 
+    private CommandHelper commandHelper = new CommandHelper();
     private GithubHelper githubHelper = new GithubHelper();
     private TicketHelper ticketHelper = new TicketHelper();
     private ReleaseNoteHelper releaseNoteHelper = new ReleaseNoteHelper();
 
-    public void start() {
+    public void start(final String[] args) {
+        final Constant.Teams teams = this.commandHelper.start(args);
+        if (teams == Constant.Teams.NONE) {
+            return;
+        }
         // start to fetch and parse PR data from github
-//        this.githubHelper.start();
+        this.githubHelper.start();
         this.githubHelper.readReleaseReportFile();
 
-        // start to fetch ticket data from Jira based on github pr data
-        // first for Bamboo
-        this.ticketHelper.start(this.githubHelper.getBambooJiraTicketIDMap(), "Bamboo");
+        switch (teams) {
+            case MOONCAKE:
+                generateReleaseReportForMooncake();
+                break;
+            case BAMBOO:
+                generateReleaseReportForBamboo();
+                break;
+            case ALL:
+                generateReleaseReportForBamboo();
+                generateReleaseReportForMooncake();
+                break;
+            default:
+                return;
+        }
+    }
 
-        // start to generate the release report file for Bamboo
+    private void generateReleaseReportForBamboo() {
+        this.ticketHelper.start(this.githubHelper.getBambooJiraTicketIDMap(), "Bamboo");
         this.releaseNoteHelper.start(this.ticketHelper.getReleaseNoteMap(),
                 Constant.BAMBOO_RELEASE_REPORT_FILE_LOCATION);
+    }
 
-        // then for Mooncake
+    private void generateReleaseReportForMooncake() {
         this.ticketHelper.start(this.githubHelper.getMooncakeJiraTicketIDMap(), "Mooncake");
-
-        // start to generate release report file for Mooncake
         this.releaseNoteHelper.start(this.ticketHelper.getReleaseNoteMap(),
                 Constant.MOONCAKE_RELEASE_REPORT_FILE_LOCATION);
     }
