@@ -1,6 +1,7 @@
 package com.hybris.caas.component;
 
 import com.hybris.caas.constant.Constant;
+import com.hybris.caas.model.JIraTicketSearchResponse;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -19,6 +20,7 @@ public class BambooSprintStatusHelper {
 
     private RestTemplate restTemplate = new RestTemplate();
     private HttpHeaders headers = new HttpHeaders();
+    private JIraTicketSearchResponse jIraTicketSearchResponse = null;
 
     public void start() {
         // search the current sprint all tickets for Bamboo
@@ -33,8 +35,9 @@ public class BambooSprintStatusHelper {
         HttpEntity<String> entity = new HttpEntity<>(null, headers);
         Map<String, String> paramMap = new HashMap<String, String>();
         paramMap.put("jql", Constant.JIRA_SEARCH_ISSUES_JQL);
-        ResponseEntity<Object> exchange = restTemplate.exchange(Constant.JIRA_SEARCH_ISSUES_URL,
-                HttpMethod.GET, entity, Object.class, paramMap);
-        System.out.println(exchange.getBody());
+        paramMap.put("maxResults", Constant.JIRA_SEARCH_ISSUE_MAXRESULTS);
+        ResponseEntity<JIraTicketSearchResponse> exchange = restTemplate.exchange(Constant.JIRA_SEARCH_ISSUES_URL,
+                HttpMethod.GET, entity, JIraTicketSearchResponse.class, paramMap);
+        this.jIraTicketSearchResponse = exchange.getBody();
     }
 }
