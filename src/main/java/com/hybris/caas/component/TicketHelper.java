@@ -2,7 +2,7 @@ package com.hybris.caas.component;
 
 import com.hybris.caas.constant.Constant;
 import com.hybris.caas.model.GithubTicket;
-import com.hybris.caas.model.JiraTicket;
+import com.hybris.caas.model.JiraTicketResponse;
 import com.hybris.caas.model.ReleaseNote;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -38,7 +38,7 @@ public class TicketHelper {
         System.out.println("Finish to generate release report for " +  team);
     }
 
-    private void parseJiraTicket(final JiraTicket body, final String repository) {
+    private void parseJiraTicket(final JiraTicketResponse body, final String repository) {
         if (body != null) {
             // when it has the parent, get the parent one instead
             if (body.fields.parent != null) {
@@ -64,10 +64,10 @@ public class TicketHelper {
         }
     }
 
-    private JiraTicket fetchJiraTicketByID(final String id) {
+    private JiraTicketResponse fetchJiraTicketByID(final String id) {
         HttpEntity<String> entity = new HttpEntity<>(null, headers);
-        ResponseEntity<JiraTicket> exchange = restTemplate.exchange(Constant.JIRA_GET_ISSUE_URL + id,
-                HttpMethod.GET, entity, JiraTicket.class);
+        ResponseEntity<JiraTicketResponse> exchange = restTemplate.exchange(Constant.JIRA_GET_ISSUE_URL + id,
+                HttpMethod.GET, entity, JiraTicketResponse.class);
         return exchange.getBody();
     }
 }
