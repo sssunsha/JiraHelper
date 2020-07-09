@@ -1,22 +1,15 @@
 package com.hybris.caas.service;
 
-import com.hybris.caas.component.CommandHelper;
-import com.hybris.caas.component.GithubHelper;
-import com.hybris.caas.component.ReleaseNoteHelper;
-import com.hybris.caas.component.TicketHelper;
+import com.hybris.caas.component.*;
 import com.hybris.caas.constant.Constant;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import java.io.IOException;
 
-@Service
 public class JiraHelperMangerService {
 
     private CommandHelper commandHelper = new CommandHelper();
     private GithubHelper githubHelper = new GithubHelper();
     private TicketHelper ticketHelper = new TicketHelper();
     private ReleaseNoteHelper releaseNoteHelper = new ReleaseNoteHelper();
+    private BambooSprintStatusHelper bambooSprintStatusHelper = new BambooSprintStatusHelper();
 
     public void start(final String[] args) {
         final Constant.Teams teams = this.commandHelper.start(args);
@@ -37,6 +30,9 @@ public class JiraHelperMangerService {
                 this.githubHelper.start(teams);
                 generateReleaseReportForBamboo();
                 generateReleaseReportForMooncake();
+                break;
+            case BAMBOO_SPRINT_STATUS:
+                this.bambooSprintStatusHelper.start();
                 break;
             default:
                 return;

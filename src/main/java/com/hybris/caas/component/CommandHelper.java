@@ -22,6 +22,9 @@ public class CommandHelper {
             case "-a":
             case "--all":
                 return Constant.Teams.ALL;
+            case "-s":
+            case "--status":
+                return Constant.Teams.BAMBOO_SPRINT_STATUS;
             default:
                 System.out.println("command is invalid, please check the command help information");
                 printHelpInformation();
@@ -34,5 +37,6 @@ public class CommandHelper {
         System.out.println("-a, --all [default]: generate the release report for both Bamboo and Mooncake services");
         System.out.println("-b, --bamboo: only generate release report for Bamboo services");
         System.out.println("-m, --mooncake: only generate release report for Mooncake services");
+        System.out.println("-s, --status: show the current sprint running status for Bamboo teams");
     }
 }

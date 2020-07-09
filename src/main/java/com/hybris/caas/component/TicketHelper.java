@@ -4,7 +4,6 @@ import com.hybris.caas.constant.Constant;
 import com.hybris.caas.model.GithubTicket;
 import com.hybris.caas.model.JiraTicket;
 import com.hybris.caas.model.ReleaseNote;
-import org.json.JSONObject;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -12,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.lang.reflect.Executable;
 import java.util.*;
 
 @Component
@@ -68,7 +66,7 @@ public class TicketHelper {
 
     private JiraTicket fetchJiraTicketByID(final String id) {
         HttpEntity<String> entity = new HttpEntity<>(null, headers);
-        ResponseEntity<JiraTicket> exchange = restTemplate.exchange(Constant.JIRA_URL + id,
+        ResponseEntity<JiraTicket> exchange = restTemplate.exchange(Constant.JIRA_GET_ISSUE_URL + id,
                 HttpMethod.GET, entity, JiraTicket.class);
         return exchange.getBody();
     }
