@@ -4,10 +4,8 @@ import com.hybris.caas.model.GithubService;
 import com.hybris.caas.model.ReleaseNote;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ReleaseNoteHelper {
 
@@ -34,13 +32,15 @@ public class ReleaseNoteHelper {
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(f));
             releaseMap.forEach((key, value) -> {
                 try {
-                    Integer index = 1;
+                    AtomicReference<Integer> index = new AtomicReference<>(1);
                     writer.write("# "+key + " (" + serviceMap.get(key).sha1 + ")");
                     writer.newLine();
+                    value.sort(Comparator.reverseOrder());
                     value.forEach(v -> {
                         try {
                             writer.write(index.toString() + ". " + v.type + ": " + v.description);
                             writer.newLine();
+                            index.updateAndGet(v1 -> v1 + 1);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

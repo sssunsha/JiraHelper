@@ -26,6 +26,7 @@ public class TicketHelper {
 
     // Since there is one ticket in multiple service, so the map key is [ticket key:repository]
     private Map<String, ReleaseNote> releaseNoteMap = new HashMap<>();
+
     private String team;
 
     public void start(Map<String, GithubTicket> ticketMap, final String team) {
@@ -60,6 +61,8 @@ public class TicketHelper {
                         rn.type = "Bugfix";
                         break;
                     case "Task":
+                        rn.type = "Task";
+                    default:
                         rn.type = "Task";
                 }
                 String releaseNoteKey = body.key + ":" + repository;
