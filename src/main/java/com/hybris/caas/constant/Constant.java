@@ -30,7 +30,7 @@ public class Constant {
         "gbaas-service"};
 
     public static final String SPRINT_REPORT_MARK = "----------------------------------------------------------------------------";
-    public static final String SPRINT_REPORT_TICKET_REGX = "CAAS-[0-9]+";
+    public static final String SPRINT_REPORT_TICKET_REGX = "(CAAS|caas)-[0-9]+";
     public static final String SPRINT_REPORT_SCRIPT_LOCATION = "./sprint-release-report.sh";
     public static final String SPRINT_REPORT_FILE_LOCATION ="./release_notes.txt";
     public static final String BAMBOO_RELEASE_REPORT_FILE_LOCATION = "./bamboo_release_report.md";
