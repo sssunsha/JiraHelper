@@ -20,6 +20,7 @@ public class JiraHelperApplication {
     public static void main(final String[] args) {
         System.out.println(args);
         System.out.println("Welcome to Jira helper ...........");
-        new JiraHelperMangerService().start(args);
+//        new JiraHelperMangerService().start(args);
+        SpringApplication.run(JiraHelperApplication.class);
     }
 }

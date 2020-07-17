@@ -9,7 +9,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class ReleaseNoteHelper {
 
-    public  void start(Map<String, ReleaseNote> map, Map<String, GithubService> serviceMap, String releaseReportFileLocation) {
+    public  void start(Map<String, ReleaseNote> map, Map<String, GithubService> serviceMap,
+                       String releaseReportFileLocation, StringBuilder releseReportStringBuilder) {
 
         // generate the new release note map based on repository
         // here the map key is the repository
@@ -26,7 +27,7 @@ public class ReleaseNoteHelper {
             }
         });
 
-        // write the release note report to the file
+        // write the release note report both to the file and StringBuilder
         try {
             OutputStream f = new FileOutputStream(releaseReportFileLocation);
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(f));
@@ -34,12 +35,16 @@ public class ReleaseNoteHelper {
                 try {
                     AtomicReference<Integer> index = new AtomicReference<>(1);
                     writer.write("# "+key + " (" + serviceMap.get(key).sha1 + ")");
+                    releseReportStringBuilder.append("# "+key + " (" + serviceMap.get(key).sha1 + ")");
                     writer.newLine();
+                    releseReportStringBuilder.append("\n");
                     value.sort(Comparator.reverseOrder());
                     value.forEach(v -> {
                         try {
                             writer.write(index.toString() + ". " + v.type + ": " + v.description);
+                            releseReportStringBuilder.append(index.toString() + ". " + v.type + ": " + v.description);
                             writer.newLine();
+                            releseReportStringBuilder.append("\n");
                             index.updateAndGet(v1 -> v1 + 1);
                         } catch (IOException e) {
                             e.printStackTrace();
