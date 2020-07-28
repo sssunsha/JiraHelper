@@ -1,9 +1,18 @@
 <html>
     <head>
         <title>Upscale sprint helper</title>
+        <link rel="stylesheet" href="./default.css">
+        <script src="./jquery-3.5.1.min.js"></script>
+        <script src="./default.js"></script>
     </head>
     <body>
-        <a href="/release-report/Mooncake">Mooncake's release report</a>
-        <a href="/release-report/BAMBOO">Bamboo's release report</a>
+        <div class="header">
+            <button id="mooncake-report-button-id">Mooncake's release report</button>
+            <button id="bamboo-report-button-id">Bamboo's release report</button>
+        </div>
+        <div class="content">
+            <textarea  class="mooncake-content" id="content-mooncake-id" rows="80"></textarea>
+            <textarea class="bamboo-content" id="content-bamboo-id" rows="80"></textarea>
+        </div>
     </body>
 </html>

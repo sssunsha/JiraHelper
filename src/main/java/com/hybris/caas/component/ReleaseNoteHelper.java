@@ -51,6 +51,7 @@ public class ReleaseNoteHelper {
                         }
                     });
                     writer.newLine();
+                    releseReportStringBuilder.append("\n");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
