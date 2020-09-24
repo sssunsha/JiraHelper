@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
@@ -38,8 +39,13 @@ public class TicketHelper {
         headers.set("Accept", "application/json");
         headers.set("Authorization", authorization);
 
-        ticketMap.forEach((key, value) -> this.parseJiraTicket(fetchJiraTicketByID(key), value.getRepository()));
+        ticketMap.forEach((key, value) -> this.parseJiraTicket(fetchJiraTicketByID(
+                parseJiraTicketIDForTicketKey(key)), value.getRepository()));
         System.out.println("Finish to generate release report for " +  team);
+    }
+
+    private String parseJiraTicketIDForTicketKey(final String key) {
+        return key.substring(0, key.indexOf(":"));
     }
 
     private void parseJiraTicket(final JiraTicketResponse body, final String repository) {

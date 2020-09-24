@@ -146,7 +146,9 @@ public class GithubHelper {
             GithubTicket gt = new GithubTicket();
             gt.setRepository(repository);
             gt.setTicketID(m.group());
-            map.put(m.group(), gt);
+            // use jira ticket id and repository name as the map key
+            // [ticketId]:[repositoryName]
+            map.put(m.group() + ":" + repository, gt);
         }
         return map;
     }
