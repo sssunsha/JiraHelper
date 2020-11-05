@@ -29,4 +29,17 @@ $(document).ready(function(){
         isClickeEnabled = false;
     });
 
+    $("#bamboo-sprint-status-id").click(function(){
+            if (isClickeEnabled) {
+                $.ajax({url:"/sprint-status/BAMBOO",success:function(result){
+                isClickeEnabled = true;
+                }});
+            }
+            isClickeEnabled = false;
+        });
 });
+
+function openInNewTab(url) {
+      var win = window.open(url, '_blank');
+      win.focus();
+}

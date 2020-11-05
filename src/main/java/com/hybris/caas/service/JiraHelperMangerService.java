@@ -11,7 +11,7 @@ public class JiraHelperMangerService {
     private GithubHelper githubHelper = new GithubHelper();
     private TicketHelper ticketHelper = new TicketHelper();
     private ReleaseNoteHelper releaseNoteHelper = new ReleaseNoteHelper();
-    private BambooSprintStatusHelper bambooSprintStatusHelper = new BambooSprintStatusHelper();
+    private SprintStatusHelper sprintStatusHelper = new SprintStatusHelper();
     private StringBuilder releaseReportFromControllerBuilder = null;
 
     public String startFromController(final String team) {
@@ -44,7 +44,7 @@ public class JiraHelperMangerService {
                 generateReleaseReportForMooncake(releaseReportFromControllerBuilder);
                 break;
             case BAMBOO_SPRINT_STATUS:
-                this.bambooSprintStatusHelper.start();
+                this.sprintStatusHelper.start(Constant.Teams.BAMBOO.name());
                 break;
             default:
                 return;

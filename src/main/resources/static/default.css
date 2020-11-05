@@ -12,6 +12,9 @@ body {
 
 button {
     margin-left: 20px;
+    width: 250px;
+    height: 100%;
+    font-size: 14px;
 }
 
 .content {
