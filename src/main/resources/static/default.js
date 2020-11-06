@@ -1,7 +1,7 @@
 
 $(document).ready(function(){
 
-    var isClickEnabled = true;
+    isClickEnabled = true;
 
 
     $("#mooncake-report-button-id").click(function(){
@@ -28,19 +28,6 @@ $(document).ready(function(){
         }
         isClickEnabled = false;
     });
-
-    $("#bamboo-sprint-status-id").click(function(){
-            if (isClickEnabled) {
-                var sprintNumber = $("#bamboo-sprint-number").val();
-                if (!sprintNumber) {
-                    window.alert("please input valid sprint number first");
-                }
-                $.ajax({url:"/sprint-status/BAMBOO?sprintNumber=" + sprintNumber, success:function(result){
-                isClickEnabled = true;
-                }});
-            }
-            isClickEnabled = false;
-        });
 });
 
 function openInNewTab(url) {

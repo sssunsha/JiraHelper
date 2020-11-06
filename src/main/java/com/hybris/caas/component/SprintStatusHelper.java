@@ -73,11 +73,12 @@ public class SprintStatusHelper {
             ticket.subTasks = issue.fields.subtasks.stream().map(st -> st.key).collect(Collectors.toList());
             return ticket;
         }).collect(Collectors.toList());
-        System.out.println("Finish parse current sprint all tickets for Bamboo:");
         sprintStatusReport.tasks = jiraTickets.stream().filter(t -> t.type.compareTo("Task") == 0).collect(Collectors.toList());
         sprintStatusReport.bugs = jiraTickets.stream().filter(t -> t.type.compareTo("Bug") == 0).collect(Collectors.toList());
         sprintStatusReport.stories = jiraTickets.stream().filter(t -> t.type.compareTo("Story") == 0).collect(Collectors.toList());
-
+        System.out.println("Finish parse current sprint all tickets for Bamboo:");
+        System.out.println(String.format("Story: %s, Task: %s, Bug: %s", sprintStatusReport.stories.size(),
+                sprintStatusReport.tasks.size(), sprintStatusReport.bugs.size()));
     }
 
 }
