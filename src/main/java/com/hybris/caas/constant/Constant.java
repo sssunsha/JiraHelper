@@ -39,7 +39,7 @@ public class Constant {
 
     public static final String LOCAL_AUTHORIZATION_ENV = "local_authorization";
     public static final String JIRA_GET_ISSUE_URL = "https://cxjira.sap.com/rest/api/2/issue/";
-    public static final String JIRA_GET_BOARD_URL = "https://cxjira.sap.com/rest/api/2/expression/eval";
+    public static final String JIRA_GET_SPRINT_TICKET_JQL = "component = \"Bamboo - Customer, Clienteling, Order Export\" AND Sprint = \"Sprint %s - Upscale\"";
 
     public static final String JIRA_SEARCH_ISSUES_URL = "https://cxjira.sap.com/rest/api/2/search?maxResults={maxResults}&jql={jql}";
     public static final String JIRA_SEARCH_ISSUES_JQL = "project = \"Commerce as a Service\" AND component in " +
@@ -48,6 +48,5 @@ public class Constant {
             "\"kevin.su@sap.com\", \"jerify.zhang@sap.com\", \"terry.tan01@sap.com\", \"maggie.lin@sap.com\", " +
             "\"lealhom.li@sap.com\", \"j.qian@sap.com\", \"owen.liu02@sap.com\", \"allen.wu02@sap.com\") " +
             "AND Sprint in openSprints() ORDER BY Rank ASC";
-    public static final String JIRA_CURRENT_SPRINT_TICKETS_JQL = "component = \"Bamboo - Customer, Clienteling, Order Export\" AND Sprint = 10658 ";
     public static final String JIRA_SEARCH_ISSUE_MAXRESULTS = "500";
 }

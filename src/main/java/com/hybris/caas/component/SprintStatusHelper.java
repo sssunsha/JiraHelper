@@ -29,16 +29,16 @@ public class SprintStatusHelper {
     private HttpHeaders headers = new HttpHeaders();
     private SprintStatusReport sprintStatusReport = null;
 
-    public void start(String team) {
+    public void start(String team, String sprintNumber) {
         // search the current sprint all tickets for Bamboo
         switch (team) {
             case "BAMBOO":
-                fetchBambooCurrentSprintAllTickets();
+                fetchBambooCurrentSprintAllTickets(sprintNumber);
                 break;
         }
     }
 
-    private void fetchBambooCurrentSprintAllTickets() {
+    private void fetchBambooCurrentSprintAllTickets(String sprintNumber) {
         System.out.println("Start to fetch current sprint all tickets for Bamboo:");
         String authorization = System.getenv(Constant.LOCAL_AUTHORIZATION_ENV);
         headers.set("Accept", "application/json");
@@ -46,26 +46,12 @@ public class SprintStatusHelper {
         headers.set("Authorization", authorization);
         HttpEntity<String> entity = new HttpEntity<>(null, headers);
         Map<String, String> paramMap = new HashMap<String, String>();
-        paramMap.put("jql", Constant.JIRA_CURRENT_SPRINT_TICKETS_JQL);
+        paramMap.put("jql", String.format(Constant.JIRA_GET_SPRINT_TICKET_JQL, sprintNumber));
         paramMap.put("maxResults", Constant.JIRA_SEARCH_ISSUE_MAXRESULTS);
         ResponseEntity<JiraTicketSearchResponse> exchange = restTemplate.exchange(Constant.JIRA_SEARCH_ISSUES_URL,
                 HttpMethod.GET, entity, JiraTicketSearchResponse.class, paramMap);
         System.out.println("Finish fetch current sprint all tickets for Bamboo:");
-        // TODO: continue to fetch current sprint
-//        getBoardInformation();
         parseBambooCurrentSprintReport(exchange.getBody());
-    }
-
-    private void getBoardInformation() {
-        String authorization = System.getenv(Constant.LOCAL_AUTHORIZATION_ENV);
-        headers.set("Accept", "application/json");
-        headers.set("Content-Type", "application/json");
-        headers.set("Authorization", authorization);
-        HttpEntity<String> entity = new HttpEntity<>(null, headers);
-        Map<String, String> paramMap = new HashMap<String, String>();
-        ResponseEntity<Object> exchange = restTemplate.exchange(Constant.JIRA_GET_BOARD_URL,
-                HttpMethod.GET, entity, Object.class, paramMap);
-        System.out.println(exchange.getBody());
     }
 
     private void parseBambooCurrentSprintReport(final JiraTicketSearchResponse jiraTicketSearchResponse) {

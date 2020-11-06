@@ -28,7 +28,7 @@ public class Controller {
     }
 
     @GetMapping(path = "/sprint-status/{team}")
-    public void  getSprintStatus(@PathVariable String team) {
-        sprintStatusHelper.start(team);
+    public void  getSprintStatus(@PathVariable String team, @RequestParam String sprintNumber) {
+        sprintStatusHelper.start(team, sprintNumber);
     }
 }

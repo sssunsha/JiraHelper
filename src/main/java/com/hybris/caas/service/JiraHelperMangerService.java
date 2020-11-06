@@ -44,7 +44,7 @@ public class JiraHelperMangerService {
                 generateReleaseReportForMooncake(releaseReportFromControllerBuilder);
                 break;
             case BAMBOO_SPRINT_STATUS:
-                this.sprintStatusHelper.start(Constant.Teams.BAMBOO.name());
+//                this.sprintStatusHelper.start(Constant.Teams.BAMBOO.name());
                 break;
             default:
                 return;

@@ -1,41 +1,45 @@
 
 $(document).ready(function(){
 
-    var isClickeEnabled = true;
+    var isClickEnabled = true;
 
 
     $("#mooncake-report-button-id").click(function(){
-        if (isClickeEnabled) {
+        if (isClickEnabled) {
             $("#content-mooncake-id").html("start to generate release report for team mooncake ... \n"
                 + "please wait for a while ...");
             $.ajax({url:"/release-report/MOONCAKE",success:function(result){
             $("#content-mooncake-id").html(result);
-            isClickeEnabled = true;
+            isClickEnabled = true;
             }});
         }
-        isClickeEnabled = false;
+        isClickEnabled = false;
     });
 
 
     $("#bamboo-report-button-id").click(function(){
-        if (isClickeEnabled) {
+        if (isClickEnabled) {
             $("#content-bamboo-id").html("start to generate release report for team Bamboo ... \n"
                 + " please wait for a while ...");
             $.ajax({url:"/release-report/BAMBOO",success:function(result){
             $("#content-bamboo-id").html(result);
-            isClickeEnabled = true;
+            isClickEnabled = true;
             }});
         }
-        isClickeEnabled = false;
+        isClickEnabled = false;
     });
 
     $("#bamboo-sprint-status-id").click(function(){
-            if (isClickeEnabled) {
-                $.ajax({url:"/sprint-status/BAMBOO",success:function(result){
-                isClickeEnabled = true;
+            if (isClickEnabled) {
+                var sprintNumber = $("#bamboo-sprint-number").val();
+                if (!sprintNumber) {
+                    window.alert("please input valid sprint number first");
+                }
+                $.ajax({url:"/sprint-status/BAMBOO?sprintNumber=" + sprintNumber, success:function(result){
+                isClickEnabled = true;
                 }});
             }
-            isClickeEnabled = false;
+            isClickEnabled = false;
         });
 });
 
