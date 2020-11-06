@@ -29,16 +29,18 @@ public class SprintStatusHelper {
     private HttpHeaders headers = new HttpHeaders();
     private SprintStatusReport sprintStatusReport = null;
 
-    public void start(String team, String sprintNumber) {
+    public SprintStatusReport start(String team, String sprintNumber) {
         // search the current sprint all tickets for Bamboo
         switch (team) {
             case "BAMBOO":
-                fetchBambooCurrentSprintAllTickets(sprintNumber);
-                break;
+                return fetchBambooCurrentSprintAllTickets(sprintNumber);
+            default:
+                throw new UnsupportedOperationException("not support team for sprint status");
         }
+
     }
 
-    private void fetchBambooCurrentSprintAllTickets(String sprintNumber) {
+    private SprintStatusReport fetchBambooCurrentSprintAllTickets(String sprintNumber) {
         System.out.println("Start to fetch current sprint all tickets for Bamboo:");
         String authorization = System.getenv(Constant.LOCAL_AUTHORIZATION_ENV);
         headers.set("Accept", "application/json");
@@ -51,10 +53,10 @@ public class SprintStatusHelper {
         ResponseEntity<JiraTicketSearchResponse> exchange = restTemplate.exchange(Constant.JIRA_SEARCH_ISSUES_URL,
                 HttpMethod.GET, entity, JiraTicketSearchResponse.class, paramMap);
         System.out.println("Finish fetch current sprint all tickets for Bamboo:");
-        parseBambooCurrentSprintReport(exchange.getBody());
+        return parseBambooCurrentSprintReport(exchange.getBody());
     }
 
-    private void parseBambooCurrentSprintReport(final JiraTicketSearchResponse jiraTicketSearchResponse) {
+    private SprintStatusReport parseBambooCurrentSprintReport(final JiraTicketSearchResponse jiraTicketSearchResponse) {
         System.out.println("Start to parse current sprint all tickets for Bamboo:");
         sprintStatusReport = new SprintStatusReport();
         sprintStatusReport.total = jiraTicketSearchResponse.total;
@@ -79,6 +81,7 @@ public class SprintStatusHelper {
         System.out.println("Finish parse current sprint all tickets for Bamboo:");
         System.out.println(String.format("Story: %s, Task: %s, Bug: %s", sprintStatusReport.stories.size(),
                 sprintStatusReport.tasks.size(), sprintStatusReport.bugs.size()));
+        return sprintStatusReport;
     }
 
 }

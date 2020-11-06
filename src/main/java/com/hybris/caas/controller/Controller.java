@@ -1,6 +1,7 @@
 package com.hybris.caas.controller;
 
 import com.hybris.caas.component.SprintStatusHelper;
+import com.hybris.caas.model.SprintStatusReport;
 import com.hybris.caas.service.JiraHelperMangerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ public class Controller {
     }
 
     @GetMapping(path = "/sprint-status/{team}")
-    public void  getSprintStatus(@PathVariable String team, @RequestParam String sprintNumber) {
-        sprintStatusHelper.start(team, sprintNumber);
+    public ResponseEntity<SprintStatusReport>  getSprintStatus(@PathVariable String team, @RequestParam String sprintNumber) {
+        return ResponseEntity.ok(sprintStatusHelper.start(team, sprintNumber));
     }
 }

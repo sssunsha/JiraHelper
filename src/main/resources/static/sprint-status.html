@@ -1,19 +1,40 @@
 <html>
     <head>
         <title>Upscale sprint helper</title>
-        <link rel="stylesheet" href="./default.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-easyui@1.5.21/css/easyui.css">
+<!--        <link rel="stylesheet" href="./default.css">-->
         <script src="./jquery-3.5.1.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/jquery-easyui@1.5.21/js/jquery.easyui.min.js"></script>
+        <script src="http://code.highcharts.com/highcharts.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"
+              integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
         <script src="./sprint-status.js"></script>
         <title>Bamboo sprint status</title>
     </head>
-    <body>
-        <div class="header">
-            <label>Bamboo sprint: </label>
-            <input type="number" id="bamboo-sprint-number">
-            <button id="bamboo-sprint-status-id">Bamboo sprint status</button>
+    <body class="easyui-layout">
+        <div data-options="region:'north',title:'Bamboo sprint status',split:true" style="height:100px;display: flex;
+flex-direction: row;padding: 10px;align-items: center;">
+            <label style="font-size:16px">Bamboo sprint: </label>
+            <input type="number" id="bamboo-sprint-number" class="form-control" style="width: 100px;margin: 0 20px;">
+            <button id="bamboo-sprint-status-id" class="btn btn-secondary">Bamboo sprint status</button>
         </div>
-        <div class="content">
+<!--        <div data-options="region:'south',title:'',split:true" style="height:100px;"></div>-->
+<!--        <div data-options="region:'east',title:'',split:true" style="width:100px;"></div>-->
+        <div data-options="region:'west',title:'Actions',split:true" style="width:100px;">
+
+        </div>
+        <div data-options="region:'center',title:'Content'" style="padding:1px;background:#eee;">
+            <div id="tt" class="easyui-tabs" style="width:100%;height:100%;">
+                <div title="General status" style="padding:20px;display:none;" id="bamboo-sprint-status-general-status">
+                </div>
+                <div title="Tab2" data-options="closable:true" style="overflow:auto;padding:20px;display:none;">
+                    tab2
+                </div>
+                <div title="Tab3" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;display:none;">
+                    tab3
+                </div>
+            </div>
         </div>
     </body>
 </html>
