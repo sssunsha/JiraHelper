@@ -14,7 +14,6 @@ public class Constant {
         "caas2-uaa-configuration",
         "approuter",
         "continuity-engine",
-        "customer-service",
         "job-scheduler-service",
         "order-streaming",
         "standing-order-service",
