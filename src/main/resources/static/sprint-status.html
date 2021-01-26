@@ -17,22 +17,35 @@
 flex-direction: row;padding: 10px;align-items: center;">
             <label style="font-size:16px">Bamboo sprint: </label>
             <input type="number" id="bamboo-sprint-number" class="form-control" style="width: 100px;margin: 0 20px;">
-            <button id="bamboo-sprint-status-id" class="btn btn-secondary">Bamboo sprint status</button>
+            <button id="bamboo-sprint-status-id" class="btn btn-secondary">Go</button>
         </div>
 <!--        <div data-options="region:'south',title:'',split:true" style="height:100px;"></div>-->
 <!--        <div data-options="region:'east',title:'',split:true" style="width:100px;"></div>-->
         <div data-options="region:'west',title:'Actions',split:true" style="width:100px;">
 
         </div>
-        <div data-options="region:'center',title:'Content'" style="padding:1px;background:#eee;">
+        <div data-options="region:'center',title:'Sprint status'" style="padding:1px;background:#eee;">
             <div id="tt" class="easyui-tabs" style="width:100%;height:100%;">
-                <div title="General status" style="padding:20px;display:none;" id="bamboo-sprint-status-general-status">
+                <div title="Stories" style="padding:20px;display:none;" id="stories">
+                    <div class="card" style="width:100%;height:100%">
+                        <div class="card-body" id="stories-card-id">
+
+                        </div>
+                    </div>
                 </div>
-                <div title="Tab2" data-options="closable:true" style="overflow:auto;padding:20px;display:none;">
-                    tab2
+                <div title="Tasks" data-options="closable:true" style="overflow:auto;padding:20px;display:none;" id="tasks">
+                    <div class="card" style="width:100%;height:100%">
+                        <div class="card-body" id="tasks-card-id">
+
+                        </div>
+                    </div>
                 </div>
-                <div title="Tab3" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;display:none;">
-                    tab3
+                <div title="Bugs" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;display:none;" id="bugs">
+                    <div class="card" style="width:100%;height:100%">
+                        <div class="card-body" id="bugs-card-id">
+
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

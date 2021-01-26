@@ -84,6 +84,7 @@ public class TicketHelper {
                     HttpMethod.GET, entity, JiraTicketResponse.class);
             return exchange.getBody();
         } catch (Exception e) {
+            System.out.println(e);
         }
         return null;
     }

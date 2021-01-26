@@ -1,4 +1,16 @@
 
+var tickets;
+
+var tasks;
+var stories;
+var bugs;
+
+function displayTicketsReport() {
+    tasks = tickets.tasks;
+    bugs = tickets.bugs;
+    stories = tickets.stories;
+}
+
 $(document).ready(function(){
     $("#bamboo-sprint-status-id").click(function(){
         var sprintNumber = $("#bamboo-sprint-number").val();
@@ -8,10 +20,10 @@ $(document).ready(function(){
         }
         $.ajax({url:"/sprint-status/BAMBOO?sprintNumber=" + sprintNumber,
             success:function(result){
-            // TODO: add result handle codes
-//            sprintGeneralStatus.html(result);
+            tickets = result;
+            displayTicketsReport();
         }});
-        // TODO:: add status update message codes
-//        sprintGeneralStatus.html("start to generate sprint status for Bamboo ...");
     });
 });
+
+
