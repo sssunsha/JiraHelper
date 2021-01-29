@@ -4,6 +4,8 @@ import com.hybris.caas.constant.Constant;
 import com.hybris.caas.model.JiraTicket;
 import com.hybris.caas.model.JiraTicketSearchResponse;
 import com.hybris.caas.model.SprintStatusReport;
+import com.sun.deploy.util.ArrayUtil;
+import com.sun.tools.javac.util.ArrayUtils;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -11,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,12 +75,41 @@ public class SprintStatusHelper {
             ticket.priority = issue.fields.priority.name;
             ticket.components = issue.fields.components.stream().map(c -> c.name).collect(Collectors.toList());
             ticket.parent = issue.fields.parent != null ? issue.fields.parent.key : null;
-            ticket.subTasks = issue.fields.subtasks.stream().map(st -> st.key).collect(Collectors.toList());
             return ticket;
         }).collect(Collectors.toList());
-        sprintStatusReport.tasks = jiraTickets.stream().filter(t -> t.type.compareTo("Task") == 0).collect(Collectors.toList());
-        sprintStatusReport.bugs = jiraTickets.stream().filter(t -> t.type.compareTo("Bug") == 0).collect(Collectors.toList());
-        sprintStatusReport.stories = jiraTickets.stream().filter(t -> t.type.compareTo("Story") == 0).collect(Collectors.toList());
+        sprintStatusReport.tasks = new ArrayList<>();
+        sprintStatusReport.bugs = new ArrayList<>();
+        sprintStatusReport.stories = new ArrayList<>();
+        jiraTickets.forEach(t -> {
+            switch (t.type) {
+                case "Task":
+                    sprintStatusReport.tasks.add(t);
+                    break;
+                case "Story":
+                    sprintStatusReport.stories.add(t);
+                    break;
+                case "Bug":
+                    sprintStatusReport.bugs.add(t);
+                    break;
+            }
+        });
+        jiraTickets.stream().filter(t -> t.type.equalsIgnoreCase("Sub-task")).forEach(s -> {
+            sprintStatusReport.stories.forEach(t -> {
+                if (t.key.equalsIgnoreCase(s.parent)) {
+                    t.subTasks.add(s);
+                }
+            });
+            sprintStatusReport.tasks.forEach(t -> {
+                if (t.key.equalsIgnoreCase(s.parent)) {
+                    t.subTasks.add(s);
+                }
+            });
+            sprintStatusReport.bugs.forEach(t -> {
+                if (t.key.equalsIgnoreCase(s.parent)) {
+                    t.subTasks.add(s);
+                }
+            });
+        });
         System.out.println("Finish parse current sprint all tickets for Bamboo:");
         System.out.println(String.format("Story: %s, Task: %s, Bug: %s", sprintStatusReport.stories.size(),
                 sprintStatusReport.tasks.size(), sprintStatusReport.bugs.size()));

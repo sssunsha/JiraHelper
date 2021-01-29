@@ -1,5 +1,6 @@
 package com.hybris.caas.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class JiraTicket {
@@ -13,6 +14,6 @@ public class JiraTicket {
     public String priority;
     public List<String> components;
     public String sprint;
-    public List<String> subTasks; // ticket key collection
+    public List<JiraTicket> subTasks = new ArrayList<>(); // ticket key collection
     public String parent; // store parent ticket key here
 }
