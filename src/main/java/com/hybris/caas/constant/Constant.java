@@ -27,7 +27,8 @@ public class Constant {
         "tax-service",
         "configuration-service",
         "gbaas-service",
-        "domain-commons"};
+        "domain-commons",
+        "invoice-service"};
 
     public static final String SPRINT_REPORT_MARK = "----------------------------------------------------------------------------";
     public static final String SPRINT_REPORT_TICKET_REGX = "([a-zA-Z]+)-[0-9]+";

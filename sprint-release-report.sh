@@ -22,13 +22,13 @@ echo
 release_notes=$(pwd)/release_notes.txt
 project_dir="/Users/i340818/workspace/github"
 projcet_name_bamboo=("caas2-uaa-configuration" "approuter" "continuity-engine" "job-scheduler-service" "order-streaming" "standing-order-service" "caas2-idp-service" "payment-service")
-project_name_mooncake=("order-broker" "order-export" "shipping-service" "tax-service" "configuration-service" "gbaas-service" "domain-commons")
+project_name_mooncake=("order-broker" "order-export" "shipping-service" "tax-service" "configuration-service" "gbaas-service" "domain-commons" "invoice-service")
 
 
 generateProjectReleaseNotes() {
 	cd $project_dir/$project
 	echo "----------------------------------------------------------------------------" >> $release_notes
-	echo $project: >> $release_notes
+	echo [[$project]]: >> $release_notes
 	echo "start $project"
 	echo "start $project fetch"
 	git fetch --all

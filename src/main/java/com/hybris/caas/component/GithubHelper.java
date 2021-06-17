@@ -122,7 +122,7 @@ public class GithubHelper {
     private void parseSprintReportHelp(final String report,  final String[] repositories, Map<String, GithubTicket> map) {
         map.clear();
         for (String repository : repositories) {
-            int head = report.indexOf(repository);
+            int head = report.indexOf("[[" + repository + "]]");
             int end = report.indexOf(Constant.SPRINT_REPORT_MARK, head);
             String subStr = report.substring(head, end);
             // get sha1 for the repository
